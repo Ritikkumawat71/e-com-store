@@ -3,6 +3,8 @@ package com.shopping.utils;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -18,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class CommonUtil {
+	Logger logger = LogManager.getLogger(CommonUtil.class);
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -28,21 +31,27 @@ public class CommonUtil {
 	public Boolean sendMail(String url, String reciepentEmail) throws UnsupportedEncodingException, MessagingException {
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, true); // Added 'true' for multipart (good practice)
+			MimeMessageHelper helper = new MimeMessageHelper(message, true); 
 			
-			helper.setFrom("ritikkumawat71@gmail.com", "Shopping Cart"); 
+			helper.setFrom(StatusResponse.SENDER_EMAIL, StatusResponse.EMAIL_TITLE); 
 			helper.setTo(reciepentEmail);
 			
-			String content = "<p>Hello, </p>" 
-			                 + "<p>You have requested to reset your password.</p>"
-			                 + "<p>Click the link below to change your password:</p>" 
-			                 + "<p> <a href=\"" + url + "\">Change my password</a></p>"; // Corrected anchor tag
-			                 
+			String content =
+			        "<p>Hello,</p>"
+			      + "<p>We received a request to reset your password for your account.</p>"
+			      + "<p>Please click the link below to create a new password:</p>"
+			      + "<p><a href=\"" + url + "\" style=\"color:#1a73e8; font-weight:bold;\">Reset My Password</a></p>"
+			      + "<p>If you did not request a password reset, please ignore this email or contact our support team.</p>"
+			      + "<p>This link will expire for security reasons.</p>"
+			      + "<br>"
+			      + "<p>Thank you,</p>"
+			      + "<p><strong>E-Com-Store Support Team</strong></p>";
+			
 			helper.setSubject("Password Reset");
 			helper.setText(content, true); 
 			mailSender.send(message);
 		}catch (Exception e) {
-			e.printStackTrace();
+			SHCCustomExceptionLogger.customExceptionPrintTrace(logger, e);
 		}
 		return true;
 	}
@@ -69,7 +78,7 @@ public class CommonUtil {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 		
-		helper.setFrom("ritikkumawat71@gmail.com", "Shopping Cart");
+		helper.setFrom(StatusResponse.SENDER_EMAIL, StatusResponse.EMAIL_TITLE);
 		helper.setTo(order.getOrderAddress().getEmail());
 		
 		msg = msg.replace("[[name]]", order.getOrderAddress().getFirstName());
