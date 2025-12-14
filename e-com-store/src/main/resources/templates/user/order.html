@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container mt-5 p-5">
+			 <form action="/user/save-order" method="post">
+			<div class="row">
+				<div class="col-md-6 p-2">
+			  <p class="text-center fs-4">Billing Address</p>
+			  <hr>
+					
+					    <div class="mb-3 row">
+					      <div class="col p-1">
+					    <label>First Name</label>
+					      <input type="text" name="firstName" class="form-control mt-1" required>
+					      </div>
+					      <div class="col p-1">
+					      <label>Last Name</label>
+					      <input type="text" name="lastName" class="form-control mt-1" required>
+					      </div>
+					    </div>
+					    <div class="mb-3 row">
+					    <div class="col p-1">
+					    <label>Email</label>
+					      <input type="email" name="email"class="form-control mt-1" required>
+					      </div>
+					      <div class="col p-1">
+					      <label>Mobile Number</label>
+					      <input type="number" name="mobileNumber" class="form-control mt-1" required>
+					      </div>
+					    </div>
+					    <div class="mb-3 row">
+					    <div class="col p-1">
+					    <label>Address</label>
+					      <input type="text" name="address" class="form-control mt-1" required>
+					      </div>
+					      <div class="col p-1">
+					      <label>City</label>
+					      <input type="text" name="city" class="form-control mt-1" required>
+					      </div>
+					    </div>
+					    <div class="mb-3 row">
+					    <div class="col p-1">
+					    <label>State</label>
+					      <input type="text" name="state" class="form-control mt-1" required>
+					      </div>
+					      <div class="col p-1">
+					      <label>Pincode</label>
+					      <input type="number" name="pincode" class="form-control mt-1" required>
+					      </div>
+					    </div>
+					 
+				</div>
+				<div class="col-md-6 p-2">
+				<p class="text-center fs-4">Payment Option</p>
+				<hr>
+				   <div class="card">
+				   <div class="card-body">
+				    <table class="table table-borderless">
+				      <tbody>
+				        <tr>
+				          <td>Total Price</td>
+				          <td>:</td>
+				          <td>&#8377; [[${OrderPrice}]]</td>
+				        </tr>
+				        <tr>
+				          <td>Delivery fee</td>
+				          <td>:</td>
+				          <td>&#8377; 60</td>
+				        </tr>
+				        <tr>
+				          <td>Tax</td>
+				          <td>:</td>
+				          <td>&#8377; 100</td>
+				        </tr>
+				        <tr class="border-top">
+				          <td>total Price</td>
+				          <td>:</td>
+				          <td>&#8377; [[${totalOrderPrice}]]</td>
+				        </tr>
+				      </tbody>
+				    </table>
+				   </div>
+				   </div>
+					<div class="card shadow p-3 mb-5 mt-3 bg-body-tertiary rounded">
+						
+						<div class="card-body">
+							
+								<div class="mb-3">
+									<label class="form-label">Select payment Option's</label> 
+									<select class="form-control" name="paymentType">
+									   <option>--Select--</option>
+									   <option value="COD">Cash On Delivery</option>
+									   <option value="ONLINE">Online Payment</option>
+									</select>
+								</div>
+								
+								<button class="btn bg-primary text-white col-md-12">Place Order</button>
+							
+						</div>
+						
+					</div>
+				</div>
+			</div>
+				</form>
+		</div>
+	</section>
+</body>
+</html>

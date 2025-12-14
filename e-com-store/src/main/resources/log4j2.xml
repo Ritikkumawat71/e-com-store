@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+	<Appenders>
+        
+        <RollingFile name="RollingFile"
+            fileName="/media/shared/logs/shoppingcart.log"
+            filePattern="/media/shared/logs/shoppingcart-%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+					<!-- Rolling based on file size -->
+                <SizeBasedTriggeringPolicy size="10 MB" />
+                <OnStartupTriggeringPolicy />
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy max="10" />
+        </RollingFile>
+        
+    </Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef
+				ref="RollingFile" />
+		</Root>
+	</Loggers>
+</Configuration>

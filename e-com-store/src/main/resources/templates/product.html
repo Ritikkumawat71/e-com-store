@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org"
+	th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container-fluid bg-primary p-5 mt-4">
+			<div class="row">
+				<div class="col-md-8 offset-md-2">
+					<form action="/products" method="get">
+						<div class="input-group">
+							<input type="text" class="form-control" name="ch">
+							<button class="btn btn-light text-dark ms-3 col-md-3">
+								<i class="fa-solid fa-magnifying-glass"></i>Search
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid mt-1">
+			<div class="row">
+				<div class="col-md-2 p-0">
+					<div class="card shadow-sm p-0 mb-5 bg-body-tertiary rounded">
+						<div class="card-body">
+							<div class="list-group">
+								<p class="fs-5">Category</p>
+								<a href="/products"
+									class="list-group-item list-group-item-action"
+									th:classappend="${paramValue == ''} ? 'active' : ''"
+									aria-current="true"> ALL </a> <a
+									th:href="@{'/products?category='+${c.name}}"
+									th:each="c:${categories}"
+									th:classappend="${paramValue == c.name} ? 'active' : ''"
+									class="list-group-item list-group-item-action">[[${c.name}]]</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-10">
+					<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+						<div class="card-body">
+							<p class="fs-3 text-center">Products</p>
+
+							<div class="row">
+								<th:block th:if="${productsSize > 0}">
+									<div class="col-md-3" th:each="p:${products}">
+										<div class="card">
+											<div class="card-body">
+												<img alt="Image load" th:src="@{'img/p_i/'+${p.image}}"
+													width="100%" height="150px">
+												<p class="fs-5 text-center">[[${p.title}]]</p>
+												<div class="row text-center">
+													<p class="fs-6 fw-bold">
+													    &#8377; <span>[[${p.discountPrice ?: p.price}]]</span>
+
+													    <th:block th:if="${p.discountPrice}">
+													        <br>
+													        &#8377; <span class="text-decoration-line-through text-secondary">[[${p.price}]]</span>
+													        
+													        <span class="fs-6 text-success">[[${p.discount}]]% off</span>
+													    </th:block>
+													</p>
+													<a th:href="@{'/viewProduct/'+${p.id}}"
+														class="btn btn-primary col-md-6 offset-md-3">View
+														Details</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</th:block>
+								<th:block th:unless="${productsSize > 0}">
+									<p class="fs-4 text-center mt-4">Product not available</p>
+								</th:block>
+								<!-- TODO : after backend implement are remove -->
+
+								<!-- End -->
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">Total Products : [[${totalElements}]]</div>
+						<div class="col-md-6">
+						  <th:block th:if="${productsSize>0}">
+							<!-- Start Paggination -->
+							<nav aria-label="Page navigation example">
+								<ul class="pagination">
+									<li class="page-item"><a class="page-link" th:classappend = "${isFirst} ? 'disabled' : '' " th:href="@{'/products?pageNo='+${pageNo-1}}"
+										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+									</a></li>
+									
+									<li th:each = "i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${pageNo+1==i}?'active':'' ">
+									      <a class="page-link" th:href="@{'/products?pageNo='+${i-1}}">[[${i}]]</a></li>
+									
+									<li class="page-item"><a class="page-link" th:classappend = "${isLast} ? 'disabled' : '' " th:href="@{'/products?pageNo='+${pageNo+1}}"
+										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+									</a></li>
+								</ul>
+							</nav>
+						  </th:block>	
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
